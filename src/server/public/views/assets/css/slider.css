@@ -1,0 +1,10 @@
+.ui-slider-range {
+    background:green;
+}
+.percent {
+    color:green;
+    font-weight:bold;
+    text-align:center;
+    width:100%;
+    border:none;
+}
