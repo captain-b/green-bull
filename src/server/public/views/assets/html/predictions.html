@@ -1,0 +1,201 @@
+<link href="../assets/css/custom-button.css" rel="stylesheet" />
+<div class="container-fluid py-4">
+  <div class="row" id="wallet-not-connected-row">
+    <div class="col-lg-12 col-sm-6 mb-xl-0 mb-4 text-center">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span class="alert-text"><strong>Warning:</strong> <span id="warning-message">Wallet not connected.</span></span>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="info-element">
+
+    <div class="col-lg-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Locked in Pool</p>
+                <h5 class="font-weight-bolder mb-0" id="total-locked">
+                  - USDT
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                <i class="ni ni-lock-circle-open text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Next Round</p>
+                <h5 class="font-weight-bolder mb-0" id="current-round-label">
+                  -
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                <i class="ni ni-spaceship text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+                <p class="text-sm mb-0 text-capitalize font-weight-bold">Round Ends In:</p>
+                <h5 class="font-weight-bolder mb-0" id="lock-timestamp">
+                  -
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                <i class="ni ni-time-alarm text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-1 col-sm-0 mb-xl-0 mb-4 mt-1">
+    </div>
+
+    <div class="col-xl-2 col-sm-0 mb-xl-0 mb-4 mt-1" id="position-options">
+        <button onclick="placePosition(true)" class="btn btn-success" type="button" style="width: 100%">Long <span id="bull-ratio">x -</span></button>
+        <button onclick="placePosition(false)" class="btn btn-danger" type="button" style="width: 100%">Short <span id="bear-ratio">x -</span></button>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 10px">
+    <div class="col-lg-12 mb-lg-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="col-lg-12">
+          <div class="row">
+            <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+              <div class="tradingview_755aa" id="tradingview_755aa"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+              <script type="text/javascript">
+                new TradingView.widget(
+                        {
+                          "autosize": true,
+                          "symbol": "BINANCE:BTCUSDT",
+                          "interval": "5",
+                          "timezone": "Etc/UTC",
+                          "theme": "light",
+                          "style": "1",
+                          "locale": "en",
+                          "toolbar_bg": "#f1f3f6",
+                          "enable_publishing": false,
+                          "container_id": "tradingview_755aa"
+                        }
+                );
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row mt-4" id="history-row">
+      <div class="col-lg-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Round History</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <div style="text-align: center" id="loading">
+                <img src="../assets/img/loading-icon.gif">
+                <p>Loading</p>
+              </div>
+              <table class="table align-items-center mb-0" id="table">
+                <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Round #</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lock Price</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Close Price</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pool Prize</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Win</th>
+                  <th class="text-left text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Your Position</th>
+                </tr>
+                </thead>
+                <tbody id="history-table-row"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-header pb-0 px-3" style="text-align: center">
+            <button id="load-more-button" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer" onclick="historyPage()">
+              Load More
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-lg-12 mb-lg-0 mb-4">
+        <div class="card">
+          <div class="card-body p-3">
+            <div class="row">
+              <!-- TradingView Widget BEGIN -->
+              <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+                  {
+                    "interval": "5m",
+                          "width": "100%",
+                          "isTransparent": true,
+                          "height": "450",
+                          "symbol": "BINANCE:BTCUSDT",
+                          "showIntervalTabs": true,
+                          "locale": "en",
+                          "colorTheme": "light"
+                  }
+                </script>
+              </div>
+              <!-- TradingView Widget END -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<script>
+  document.getElementById('predictions-menu-link').className = 'nav-link  active';
+  document.getElementById('tradingview_755aa').style.height = '700px';
+
+  function historyPage() {
+    window.location = '/history';
+  }
+</script>
+<script type="text/javascript" src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
+
+  <script type="text/javascript" src="../assets/js/utils/abi.js"></script>
+  <script type="text/javascript" src="../assets/js/utils/trades.js"></script>
+  <script type="text/javascript" src="../assets/js/utils/history.js"></script>
+  <script type="text/javascript" src="../assets/js/utils/predictions.js"></script>
+<script>
+
+  checkAccount();
+</script>

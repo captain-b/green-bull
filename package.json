@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start:dev": "NODE_ENV=local-dev ts-node-dev --respawn src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "npm run clear && tsc && npm run  copy-files",
+    "start": "node dist/index.js",
+    "clear": "rm -rf dist",
+    "copy-files": "cp -rf src/server/public/views dist/server/public/"
   },
   "dependencies": {
     "consolidate": "^0.16.0",
