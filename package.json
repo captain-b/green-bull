@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "NODE_ENV=local-dev ts-node-dev --respawn src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "consolidate": "^0.16.0",
