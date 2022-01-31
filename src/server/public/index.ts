@@ -7,9 +7,10 @@ export const PublicRoutes = (app: Application) => {
     InitHandlebars(app);
     InitMiddleware(app);
 
-    app.get('/', HomePage);
-    app.get('/predictions', PredictionsPage);
-    app.get('/history', HistoryPage);
+    // app.get('/', HomePage);
+    // app.get('/predictions', PredictionsPage);
+    // app.get('/history', HistoryPage);
+    app.get('/*', ComingSoon);
 }
 
 const HomePage = async (req: Request, res: Response) => {
@@ -27,3 +28,7 @@ const HistoryPage = async (req: Request, res: Response) => {
     const body = await fs.readFileSync(path.join(__dirname, './views/html/trade-history.html'));
     res.render('template', {title: 'History', html: body});
 };
+
+const ComingSoon = async (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, './views/html/coming-soon.html'));
+}
