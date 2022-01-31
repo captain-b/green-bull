@@ -10,6 +10,7 @@ export const PublicRoutes = (app: Application) => {
     // app.get('/', HomePage);
     // app.get('/predictions', PredictionsPage);
     // app.get('/history', HistoryPage);
+    app.get('/logo', MiniLogo);
     app.get('/*', ComingSoon);
 }
 
@@ -31,4 +32,8 @@ const HistoryPage = async (req: Request, res: Response) => {
 
 const ComingSoon = async (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, './views/html/coming-soon.html'));
+}
+
+const MiniLogo = async (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, './views/assets/img/mini-logo.png'))
 }
