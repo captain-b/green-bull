@@ -2,6 +2,7 @@ import {Application, Request, Response} from "express";
 import {InitHandlebars, InitMiddleware} from "../../utils/express-middleware";
 import * as fs from "fs";
 import path from "path";
+import {trackEvent} from "../../utils/tracking";
 
 export const PublicRoutes = (app: Application) => {
     InitHandlebars(app);
@@ -31,6 +32,7 @@ const HistoryPage = async (req: Request, res: Response) => {
 };
 
 const ComingSoon = async (req: Request, res: Response) => {
+    trackEvent();
     res.sendFile(path.join(__dirname, './views/html/coming-soon.html'));
 }
 

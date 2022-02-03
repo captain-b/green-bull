@@ -1,3 +1,7 @@
+import {InitEnvVars} from "../utils/dotenv";
+
+InitEnvVars()
+
 import {Application} from "express";
 import https from "https";
 import {readFileSync as ReadFile} from "fs";
