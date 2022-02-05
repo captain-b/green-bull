@@ -15,7 +15,7 @@
                         Green Bull
                     </h5>
                     <p class="mb-0 font-weight-bold text-sm">
-                        Wallet: Not Connected
+                        Wallet: <span id="header-wallet">Not Connected</span>
                     </p>
                 </div>
             </div>
@@ -24,4 +24,13 @@
 </div>
 <script>
     document.getElementById('navbarBlur').className = 'navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2';
+    const headerWalletElement = document.getElementById('header-wallet');
+
+    function checkAccount() {
+        if (getCookie('ethAccount')) {
+            headerWalletElement.innerText = getCookie('ethAccount');
+            return;
+        }
+        headerWalletElement.innerText = 'Not Connected';
+    }
 </script>

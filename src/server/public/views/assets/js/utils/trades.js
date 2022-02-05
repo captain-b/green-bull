@@ -1,5 +1,6 @@
 // const predictionsContractAddress = '0xcd1aaA542fbB2a06956F604a79B797BC43132765';
-const predictionsContractAddress = '0x51763d62869594c9CDE3886A0db8A5B9D49B51b9';
+// const predictionsContractAddress = '0x51763d62869594c9CDE3886A0db8A5B9D49B51b9';
+const predictionsContractAddress = '0xc4799c4257a7D52Ebb5244a5A2D89BfB3c9618d2';
 // const baseTokenAddress = '0x603252fDde67ba039236ac14aE5c70E3c9904D7F';
 const baseTokenAddress = '0x11e0E9100DC56D928e92821E5ebD8Fe9fa12BE89';
 

@@ -1,6 +1,6 @@
 import {InitEnvVars} from "../utils/dotenv";
 
-InitEnvVars()
+InitEnvVars();
 
 import {Application} from "express";
 import https from "https";

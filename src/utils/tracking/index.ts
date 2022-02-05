@@ -5,7 +5,6 @@ const querystring = require('querystring');
 // The following environment variable is set by app.yaml when running on App
 // Engine, but will need to be set manually when running locally. See README.md.
 const {GA_TRACKING_ID} = process.env;
-console.log(GA_TRACKING_ID)
 
 export const trackEvent = async () => {
     const data = {

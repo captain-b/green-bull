@@ -8,11 +8,16 @@ export const PublicRoutes = (app: Application) => {
     InitHandlebars(app);
     InitMiddleware(app);
 
-    // app.get('/', HomePage);
+    app.get('/', HomePage);
     // app.get('/predictions', PredictionsPage);
     // app.get('/history', HistoryPage);
     app.get('/logo', MiniLogo);
-    app.get('/*', ComingSoon);
+    app.get('/*', PageNotFound);
+    // app.get('/*', ComingSoon);
+}
+
+const PageNotFound = async (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, './views/html/page-not-found.html'));
 }
 
 const HomePage = async (req: Request, res: Response) => {

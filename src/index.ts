@@ -13,7 +13,7 @@ const httpsPort = process.env.HTTPS_PORT || 8443;
 // ** Only gets triggered on our local env **
 const httpPort = process.env.HTTP_PORT || 8080;
 
-// Specify our MDM related routes.
+// Specify our server related routes.
 const serverRoutes = GreenBullRoutes();
 
 // Start the HTTP/S server.

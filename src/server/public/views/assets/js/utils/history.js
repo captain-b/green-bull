@@ -11,7 +11,6 @@ let xRow = 10;
 let loaded = false;
 
 function checkNetwork() {
-    alert(window.ethereum.chainId)
     if (window.ethereum.chainId === '0x539') {
         return false;
     }
