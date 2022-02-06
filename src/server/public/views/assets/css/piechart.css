@@ -1,0 +1,196 @@
+*
+{
+    padding:0;
+    margin:0;
+}
+.prof
+{
+    width: 60%;
+    margin:auto;
+}
+h1
+{
+    font-size: 1.75em;
+    padding:0;
+    margin:0;
+}
+.header
+{
+    display: flex;
+    justify-content:space-between;
+}
+
+h2
+{
+    font-size:1.25em;
+    padding-bottom:0.5em;
+}
+
+.line
+{
+    height: 3px;
+    padding:0;
+    margin:0;
+    border:0;
+    background-color:grey;
+}
+
+.length
+{
+    padding:0;
+    margin:0;
+}
+.full-length
+{
+    background-color: grey;
+    height:10px;
+}
+
+.given-length1
+{
+    background-color: hsl(151, 68%, 45%);
+    height: 20px;
+    transform: translateY(-15px);
+}
+
+.given-length2
+{
+    background-color: hsl(64, 97%, 46%);
+    height: 20px;
+    transform: translateY(-15px);
+}
+.given-length3
+{
+    background-color: hsl(226, 68%, 45%);
+    height: 20px;
+    transform: translateY(-15px);
+}
+.given-length4
+{
+    background-color: hsl(276, 68%, 45%);
+    height: 20px;
+    transform: translateY(-15px);
+}
+.given-length5
+{
+    background-color: hsl(0, 100%, 50%);
+    height: 20px;
+    transform: translateY(-15px);
+}
+
+.p1
+{
+    width:70%;
+}
+
+.p2
+{
+    width:10%;
+}
+
+.p3
+{
+    width:10%;
+}
+
+.p4
+{
+    width:5%;
+}
+
+.p5
+{
+    width:5%;
+}
+
+.part
+{
+    padding: 0.5em 0 0.2em 0;
+}
+
+section
+{
+    padding: 2em;
+    display: flex;
+    justify-content:center;
+}
+.pie-chart
+{
+    font-size:1.25em;
+    display:grid;
+    place-items: center;
+    background:
+            conic-gradient(
+                    hsl(151, 68%, 45%) 0,
+                    hsl(151, 68%, 45%) 70%,
+                    hsl(64, 97%, 46%) 0,
+                    hsl(64, 97%, 46%) 80%,
+                    hsl(226, 68%, 45%) 0,
+                    hsl(226, 68%, 45%) 90%,
+                    hsl(276, 68%, 45%) 0,
+                    hsl(276, 68%, 45%) 95%,
+                    hsl(0, 100%, 50%) 0,
+                    hsl(0, 100%, 50%) 100%,
+                    hsl(151, 68%, 45%) 0,
+                    hsl(151, 68%, 45%) 100%
+            );
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0;
+    border-radius:50%;
+}
+.inner
+{
+    display:grid;
+    place-items:center;
+    background:white;
+    width:225px;
+    height:225px;
+    border-radius:50%;
+}
+.option
+{
+    display: flex;
+    gap: 10px;
+    height: 1.5em;
+}
+.index
+{
+    font-size:1.25em;
+    margin:0 3em;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+}
+.colour-box
+{
+    display: inline-block;
+    height:20px;
+    width:20px;
+    border:1px solid hsl(200,100%,45%);
+}
+.c1
+{
+    background:hsl(200,100%,45%);
+}
+.c2
+{
+    background:hsl(200,100%,55%);
+}
+.c3
+{
+    background:hsl(200,100%,65%);
+}
+.c4
+{
+    background:hsl(200,100%,75%);
+}
+.c5
+{
+    background:hsl(200,100%,85%);
+}
+.c6
+{
+    background:hsl(200,100%,95%);
+}
