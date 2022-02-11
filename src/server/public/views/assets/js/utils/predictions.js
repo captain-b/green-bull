@@ -233,13 +233,13 @@ function generateWinRow(round) {
 function generatePositionRow(round) {
     let body = '';
     if (round.amount === zero) {
-        body += `<td>
+        body += `<td class="align-middle text-center text-sm">
                 <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
               </td>`;
     } else {
         const color = round.betPosition.toString() === '1' ? 'danger' : 'success';
         const position = round.betPosition.toString() === '1' ? 'down' : 'up';
-        body += `<td class="align-middle text-center">
+        body += `<td class="class="align-middle text-center text-sm"">
                     <div class="d-flex align-items-center">
                       <button class="btn btn-icon-only btn-rounded btn-outline-${color} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-${position}" aria-hidden="true"></i></button>
                       <div class="d-flex flex-column">
@@ -362,7 +362,7 @@ const placeBet = async (bull) => {
     pendingTxAlert();
     let tx;
     const roundNo = BigInt(currentRoundNo).toString();
-    const amount = BigInt(Number(inputAmountElement.value) * 10 ** 18).toString();
+    const amount = BigInt(Number(inputAmountElement.value) * 10 ** 6).toString();
     try {
         if (bull) {
             tx = await predictionsContract().connect(await provider.getSigner()).betBull(amount, roundNo);
@@ -419,3 +419,4 @@ async function loadPage() {
 
     infoElement.hidden = true
 }
+

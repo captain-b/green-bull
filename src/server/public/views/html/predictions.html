@@ -116,46 +116,52 @@
     </div>
   </div>
 
-    <div class="row mt-4" id="history-row">
-      <div class="col-lg-12">
-        <div class="card mb-4">
-          <div class="card-header pb-0">
-            <h6>Round History</h6>
-          </div>
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
-              <div style="text-align: center" id="loading">
-                <img src="../assets/img/loading-icon.gif">
-                <p>Loading</p>
+    <div class="col-lg-12 mb-lg-0 mb-4 mt-4" id="history-row">
+      <div class="card" style="background-color: #fff">
+        <div class="card-body p-3">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="card mb-4" style="box-shadow: none">
+                <div class="card-header pb-0">
+                  <h6>Round History</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="table-responsive p-0">
+                    <div style="text-align: center" id="loading">
+                      <img src="../assets/img/loading-icon.gif">
+                      <p>Loading</p>
+                    </div>
+                    <table class="table align-items-center mb-0" id="table">
+                      <thead>
+                      <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Round #</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Win</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lock Price</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Close Price</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pool Prize</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Your Position</th>
+                      </tr>
+                      </thead>
+                      <tbody id="history-table-row"></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-header pb-0 px-3" style="text-align: center">
+                  <button id="load-more-button" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer" onclick="historyPage()">
+                    Load More
+                  </button>
+                </div>
               </div>
-              <table class="table align-items-center mb-0" id="table">
-                <thead>
-                <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Round #</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lock Price</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Close Price</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pool Prize</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Win</th>
-                  <th class="text-left text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Your Position</th>
-                </tr>
-                </thead>
-                <tbody id="history-table-row"></tbody>
-              </table>
             </div>
-          </div>
-          <div class="card-header pb-0 px-3" style="text-align: center">
-            <button id="load-more-button" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer" onclick="historyPage()">
-              Load More
-            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-4">
-      <div class="col-lg-12 mb-lg-0 mb-4">
-        <div class="card">
-          <div class="card-body p-3">
+    <div class="col-lg-12 mb-lg-0 mb-4 mt-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="col-lg-12">
             <div class="row">
               <!-- TradingView Widget BEGIN -->
               <div class="tradingview-widget-container">
@@ -173,7 +179,6 @@
                   }
                 </script>
               </div>
-              <!-- TradingView Widget END -->
             </div>
           </div>
         </div>

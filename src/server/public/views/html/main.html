@@ -332,5 +332,17 @@
   </div>
 <script>
   document.getElementById('dashboard-menu-link').className = 'nav-link  active';
+  ethereum.on('accountsChanged', async (accounts) => {
+    if (accounts[0].length) {
+      setCookie('ethAccount', accounts[0]);
+      headerWalletElement.innerText = getCookie('ethAccount');
+    } else {
+      headerWalletElement.innerText = 'Not Connected';
+    }
+  });
+
+  setInterval(() => {
+    checkAccount();
+  }, 1000);
 </script>
 

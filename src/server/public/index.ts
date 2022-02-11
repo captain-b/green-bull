@@ -9,8 +9,8 @@ export const PublicRoutes = (app: Application) => {
     InitMiddleware(app);
 
     app.get('/', HomePage);
-    // app.get('/predictions', PredictionsPage);
-    // app.get('/history', HistoryPage);
+    app.get('/predictions', PredictionsPage);
+    app.get('/history', HistoryPage);
     app.get('/logo', MiniLogo);
     app.get('/*', PageNotFound);
     // app.get('/*', ComingSoon);

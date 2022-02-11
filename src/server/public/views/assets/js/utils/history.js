@@ -11,15 +11,42 @@ let xRow = 10;
 let loaded = false;
 
 function checkNetwork() {
-    if (window.ethereum.chainId === '0x539') {
+    if (window.ethereum.chainId === '0x89') {
         return false;
     }
     return true
 }
 
+// ethereum.on('connect', async (tst, tst2) => {
+//     const provider = await detectEthereumProvider();
+//     const tst3 = await provider.ethereum.request({ method: 'eth_requestAccounts' });
+//     // const chainId = await provider.request({
+//     //     method: 'eth_chainId'
+//     // });
+//     // alert(JSON.stringify(tst3))
+// })
+
+setInterval( async() => {
+    if (getCookie('ethAccount').length) {
+        const provider = await detectEthereumProvider();
+        const chainId = await provider.request({
+            method: 'eth_chainId'
+        });
+
+        window.ethereum.chainId = chainId;
+        // alert('tst' + JSON.stringify(provider))
+
+        if (chainId === '0x89') {
+            showError(false);
+            return;
+        }
+        await checkAccount();
+    }
+}, 1000);
+
 async function checkAccount() {
     const walletNotConnected = 'Wallet not connected.';
-    const wrongNetwork = 'Please select the Polygon network and refresh the page.'
+    const wrongNetwork = 'Please select the Polygon network.'
     if (getCookie('ethAccount').length) {
         if (checkNetwork()) {
             showError(true, wrongNetwork);
@@ -47,13 +74,12 @@ function showError(connected, message) {
 }
 
 async function loadTable() {
-    console.log('this')
     loadMoreElement.innerText = 'Loading';
     loadMoreElement.disabled = true;
     try {
         await loadPredictionsTable();
     } catch (e) {
-        displayAlert(e.data.message ?? '', 'error');
+        displayAlert(e.data.message ?? 'Unknown error', 'error');
     }
     loadMoreElement.innerText = 'Load More';
     loadMoreElement.disabled = false;
@@ -96,10 +122,10 @@ async function fetchPredictionHistory(a, b) {
 
         let body = '<tr>';
         body += generateRoundNumberRow(roundInfo);
+        body += generateWinRow(roundInfo);
         body += generateLockPriceRow(roundInfo);
         body += generateClosePriceRow(roundInfo);
         body += generatePoolPrizeRow(roundInfo);
-        body += generateWinRow(roundInfo);
         body += generatePositionRow(roundInfo);
 
         body += '</tr>'
@@ -248,8 +274,25 @@ function generatePositionRow(round) {
     return body;
 }
 
+ethereum.on('chainChanged', async (chainId, other) => {
+    await checkAccount();
+});
+
 predictionsContract().on('Claim', async (sender, round, amount) => {
     if (sender.toLowerCase() === selectedAccount.toLowerCase()) {
         document.getElementById(`win-${round.toString()}`).innerText = 'WON';
     }
 });
+
+// setTimeout(async () => {
+//     // await loadPredictionHistoryTable();
+//     // await checkAccount();
+//     // alert(window.ethereum.networkVersion)
+//     if (window.ethereum.chainId) {
+//         alert(window.ethereum.chainId)
+//     } else {
+//         alert('null')
+//     }
+//     alert(JSON.stringify(window.web3))
+//     console.log(window.ethereum)
+// }, 2000);

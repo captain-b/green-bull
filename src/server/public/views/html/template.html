@@ -42,6 +42,7 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/plugins/cookies.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://unpkg.com/@metamask/detect-provider/dist/detect-provider.min.js"></script>
   <script type="text/javascript" src="https://cdn.ethers.io/scripts/ethers-v4.min.js"></script>
   <script>
     if (getCookie('ethAccount').length) {
@@ -95,7 +96,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" id="predictions-menu-link">
+          <a class="nav-link" id="predictions-menu-link" href="/predictions">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
@@ -110,12 +111,12 @@
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">Predictions<br><h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">(Coming Soon)</h6></span>
+            <span class="nav-link-text ms-1">Predictions</span>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link  " id="history-menu-link">
+          <a class="nav-link  " id="history-menu-link" href="/history">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>document</title>
@@ -131,7 +132,7 @@
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">History<br><h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">(Coming Soon)</h6></span>
+            <span class="nav-link-text ms-1">History</span>
           </a>
         </li>
 
