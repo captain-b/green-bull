@@ -346,8 +346,12 @@ predictionsContract().on('Claim', ({sender, round}) => {
 
 ethereum.on('accountsChanged', async function (acc) {
     console.log(acc)
-    await loadTradingPage();
+    // await loadTradingPage();
 });
+
+// setTimeout(async () => {
+//     await loadTradingPage();
+// }, 1000)
 
 const betBull = async () => {
     await placeBet(true);

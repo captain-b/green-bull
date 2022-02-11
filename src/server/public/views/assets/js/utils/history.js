@@ -11,38 +11,45 @@ let xRow = 10;
 let loaded = false;
 
 function checkNetwork() {
-    if (window.ethereum.chainId === '0x89') {
-        return false;
-    }
-    return true
+    return window.ethereum.chainId !== '0x89';
+
 }
 
-// ethereum.on('connect', async (tst, tst2) => {
-//     const provider = await detectEthereumProvider();
-//     const tst3 = await provider.ethereum.request({ method: 'eth_requestAccounts' });
-//     // const chainId = await provider.request({
-//     //     method: 'eth_chainId'
-//     // });
-//     // alert(JSON.stringify(tst3))
-// })
-
-setInterval( async() => {
-    if (getCookie('ethAccount').length) {
-        const provider = await detectEthereumProvider();
-        const chainId = await provider.request({
-            method: 'eth_chainId'
-        });
-
-        window.ethereum.chainId = chainId;
-        // alert('tst' + JSON.stringify(provider))
-
-        if (chainId === '0x89') {
-            showError(false);
-            return;
-        }
-        await checkAccount();
+async function loadPredictionsContent() {
+    if (getCookie('ethAccount')) {
+        await ethereum.request({method: 'eth_requestAccounts'});
     }
-}, 1000);
+    try {
+        await checkAccount();
+    } catch (e) {
+        // alert('er1' + JSON.stringify(e));
+    }
+
+    try {
+        // await loadTable();
+        await loadPredictionHistoryTable();
+    } catch (e) {
+        // alert('er2' + JSON.stringify(e));
+    }
+}
+
+async function loadHistoryContent() {
+    if (getCookie('ethAccount')) {
+        await ethereum.request({method: 'eth_requestAccounts'});
+    }
+    try {
+        await checkAccount();
+    } catch (e) {
+        // alert('er1' + JSON.stringify(e));
+    }
+
+    try {
+        await loadTable();
+        // await loadPredictionHistoryTable();
+    } catch (e) {
+        // alert('er2' + JSON.stringify(e));
+    }
+}
 
 async function checkAccount() {
     const walletNotConnected = 'Wallet not connected.';
@@ -101,12 +108,6 @@ async function loadPredictionsTable() {
             BigInt(currentRoundNo) - BigInt(xRow) : 0,
         currentRoundNo.toString()
     );
-}
-
-async function loadPredictionHistoryTable() {
-    loading(true);
-    await loadTable();
-    loading(false);
 }
 
 async function fetchPredictionHistory(a, b) {
@@ -275,7 +276,7 @@ function generatePositionRow(round) {
 }
 
 ethereum.on('chainChanged', async (chainId, other) => {
-    await checkAccount();
+    await loadPredictionsContent()
 });
 
 predictionsContract().on('Claim', async (sender, round, amount) => {
@@ -283,16 +284,3 @@ predictionsContract().on('Claim', async (sender, round, amount) => {
         document.getElementById(`win-${round.toString()}`).innerText = 'WON';
     }
 });
-
-// setTimeout(async () => {
-//     // await loadPredictionHistoryTable();
-//     // await checkAccount();
-//     // alert(window.ethereum.networkVersion)
-//     if (window.ethereum.chainId) {
-//         alert(window.ethereum.chainId)
-//     } else {
-//         alert('null')
-//     }
-//     alert(JSON.stringify(window.web3))
-//     console.log(window.ethereum)
-// }, 2000);
