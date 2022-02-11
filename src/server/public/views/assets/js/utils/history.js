@@ -12,7 +12,6 @@ let loaded = false;
 
 function checkNetwork() {
     return window.ethereum.chainId !== '0x89';
-
 }
 
 async function loadPredictionsContent() {
