@@ -9,25 +9,20 @@ const airdropContract = () => {
 
 const claimAirdrop = async () => {
     try {
-        await ethereum.request({method: 'eth_requestAccounts'});
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        // alert(accs)
-        // // const provider = await detectEthereumProvider();
-        // alert(JSON.stringify(await provider.getSigner()))
+        if (!window.ethereum.chainId) {
+            await ethereum.request({method: 'eth_requestAccounts'});
+            provider = new ethers.providers.Web3Provider(window.ethereum);
+        }
+
         pendingTxAlert();
         const tx = await airdropContract().connect(await provider.getSigner()).claim();
         await tx.wait();
         txSubmittedAlert();
-
-        // pendingTxAlert();
-        // const tx = await airdropContract().connect(await provider.getSigner()).claim();
-        // await tx.wait();
-        // txSubmittedAlert();
     } catch (e) {
-        // alert(JSON.stringify(e))
-        console.log(window.ethereum)
-        if (e.data && e.data.message) {
-            displayAlert(e.data.message, 'error');
+        if ((e.data && e.data.message) || e.message) {
+            const errorMessage = e.message.includes('execution reverted') ? e.message : e.data.message;
+            displayAlert(errorMessage, 'error');
+
             return;
         }
         displayAlert('There was an unexpected error. Please use MetaMask on a desktop if the issue persists.', 'error');
