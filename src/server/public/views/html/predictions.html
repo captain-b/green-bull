@@ -204,4 +204,21 @@
 
   // checkAccount();
   // loadPredictionsContent()
+  document.addEventListener('walletConnected', async function(e) {
+    setTimeout(async () => {
+      await loadPage();
+      showError(false);
+    }, 1000);
+  });
+
+
+  setTimeout(async () => {
+      try {
+          await loadPage();
+          showError(false);
+      } catch (e) {
+          alert(JSON.stringify(e))
+      }
+  }, 2000);
+
 </script>
