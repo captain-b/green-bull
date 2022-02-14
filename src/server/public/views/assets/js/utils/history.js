@@ -23,13 +23,6 @@ async function loadPredictionsContent() {
     } catch (e) {
         // alert('er1' + JSON.stringify(e));
     }
-
-    try {
-        // await loadTable();
-        await loadPredictionHistoryTable();
-    } catch (e) {
-        // alert('er2' + JSON.stringify(e));
-    }
 }
 
 async function loadHistoryContent() {
@@ -61,6 +54,7 @@ async function checkAccount() {
         provider = new ethers.providers.Web3Provider(window.ethereum);
         showError(false);
         historyTableElement.innerHTML = '';
+        tradeHistoryRowElement.innerHTML = '';
         loaded = false;
         await loadPage();
     } else {

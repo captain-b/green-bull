@@ -80,10 +80,11 @@ function prettyShortAddress(address) {
     return `${addr.slice(0, 3)}...${addr.toString().slice(addr.length - 4)}`;
 }
 
-ethereum.on('accountsChanged', function (accounts) {
+ethereum.on('accountsChanged', async function (accounts) {
     if (accounts.length === 0) {
         disconnectMetamask()
         return;
     }
     setAccount(accounts[0]);
+    await connectToMetaMask();
 });

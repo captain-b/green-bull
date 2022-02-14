@@ -389,6 +389,7 @@ $(async () => {
 
 async function loadPage() {
     if (selectedAccount.length) {
+        tradeHistoryRowElement.innerHTML = '';
         showLoading(true);
         await loadTradingPage();
         await loadPredictionsTable();
