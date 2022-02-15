@@ -17,8 +17,9 @@ async function connectToMetaMask() {
         const accounts = await ethereum.request({method: 'eth_requestAccounts'});
         setCookie('ethAccount', accounts[0]);
         setAccount(accounts[0]);
-        const walletConnectedEvent = new CustomEvent("walletConnected");
-        document.dispatchEvent(walletConnectedEvent);
+        // alert(JSON.stringify(accounts[0]))
+        // const walletConnectedEvent = new CustomEvent("walletConnected");
+        // document.dispatchEvent(walletConnectedEvent);
     } catch (e) {
         Swal.fire({
             icon: 'error',
@@ -56,6 +57,7 @@ function installMetamask() {
 }
 
 function setAccount(account) {
+    selectedAccount = account;
     const accountAddress = prettyAddress(account).toLowerCase();
     const shortAddress = prettyShortAddress(account).toLowerCase();
     walletAddressLabel.innerText = accountAddress;
@@ -80,11 +82,28 @@ function prettyShortAddress(address) {
     return `${addr.slice(0, 3)}...${addr.toString().slice(addr.length - 4)}`;
 }
 
-ethereum.on('accountsChanged', async function (accounts) {
-    if (accounts.length === 0) {
-        disconnectMetamask()
-        return;
+$(async () => {
+    const account = getCookie('ethAccount');
+
+    if (account.length) {
+        setAccount(account);
     }
-    setAccount(accounts[0]);
-    await connectToMetaMask();
+
+    ethereum.on('accountsChanged', async function (accounts) {
+        if (accounts.length === 0) {
+            disconnectMetamask()
+            return;
+        }
+        setAccount(accounts[0]);
+        await connectToMetaMask();
+    });
+
+    document.addEventListener('walletDisconnected', function(e) {
+        checkAccount();
+    });
+
+    document.addEventListener('walletConnected', function(e) {
+        // alert('onee')
+        // checkAccount();
+    });
 });

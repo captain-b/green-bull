@@ -51,7 +51,7 @@
 
               </div>
               <div class="card-header pb-0 px-3" style="text-align: center">
-                <button id="load-more-button" onclick="loadTable()" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer">
+                <button id="load-more-button" onclick="loadTable(true)" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer">
                   Load More
                 </button>
               </div>
@@ -70,9 +70,26 @@
 <script type="text/javascript" src="../assets/js/utils/history.js"></script>
 <script>
   document.getElementById('history-menu-link').className = 'nav-link  active';
-  noTransactions(true);
-  loading(false);
-  loadHistoryContent();
-  // loadPredictionHistoryTable();
+  $(async () => {
+    if (!getCookie('ethAccount').length) {
+      showError(true, 'Wallet Not Connected');
+    } else {
+      noTransactions(true);
+      loading(false);
+      await loadHistoryContent();
+    }
+  });
 
+  document.addEventListener('walletConnected', async function(e) {
+    if (getCookie('ethAccount').length) {
+      await loadHistoryContent();
+      showError(false);
+    } else {
+      await checkAccount();
+    }
+  });
+
+  document.addEventListener('walletDisconnected', async function(e) {
+    await checkAccount();
+  });
 </script>

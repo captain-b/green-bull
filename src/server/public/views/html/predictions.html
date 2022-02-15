@@ -201,26 +201,10 @@
   <script type="text/javascript" src="../assets/js/utils/history.js"></script>
   <script type="text/javascript" src="../assets/js/utils/predictions.js"></script>
 <script>
-
-  // checkAccount();
-  // loadPredictionsContent()
   document.addEventListener('walletConnected', async function(e) {
-    // setTimeout(async () => {
-    //   await loadPage();
-    //   showError(false);
-    // }, 1000);
-    await loadPage();
-    showError(false);
+    if (getCookie('ethAccount').length) {
+      await loadPage();
+      showError(false);
+    }
   });
-
-
-  // setTimeout(async () => {
-  //     try {
-  //         await loadPage();
-  //         showError(false);
-  //     } catch (e) {
-  //         alert(JSON.stringify(e))
-  //     }
-  // }, 2000);
-
 </script>

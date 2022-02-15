@@ -12,7 +12,7 @@
                   <i class="fab me-1" aria-hidden="true"></i> Buy/Sell GBULL Token
                 </a>
                 <a class="btn btn-dark mb-0 me-2" style="margin-top: 10px" onclick="claimAirdrop()">
-                  <i class="fab me-1" aria-hidden="true"></i> Claim Airdrop (Coming Soon)
+                  <i class="fab me-1" aria-hidden="true"></i> Claim Airdrop
                 </a>
               </div>
             </div>
@@ -336,13 +336,13 @@
     if (accounts[0].length) {
       setCookie('ethAccount', accounts[0]);
       headerWalletElement.innerText = getCookie('ethAccount');
+      await checkAccount();
     } else {
       headerWalletElement.innerText = 'Not Connected';
     }
   });
 
-  setInterval(() => {
-    checkAccount();
-  }, 1000);
+  // setInterval(() => {
+  // }, 1000);
 </script>
 

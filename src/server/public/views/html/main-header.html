@@ -26,11 +26,19 @@
     document.getElementById('navbarBlur').className = 'navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2';
     const headerWalletElement = document.getElementById('header-wallet');
 
-    function checkAccount() {
-        if (getCookie('ethAccount')) {
+    async function setHeaderWalletAddress() {
+        if (getCookie('ethAccount').length) {
             headerWalletElement.innerText = getCookie('ethAccount');
             return;
         }
         headerWalletElement.innerText = 'Not Connected';
     }
+
+    document.addEventListener('walletConnected', async function(e) {
+        await setHeaderWalletAddress();
+    });
+
+    document.addEventListener('walletDisconnected', async function(e) {
+        await setHeaderWalletAddress();
+    });
 </script>

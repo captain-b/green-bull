@@ -11,7 +11,6 @@ let expiry = 0;
 let totalBull = BigInt(0);
 let totalBear = BigInt(0);
 let totalAmount = BigInt(0);
-let fullRounds = [];
 
 xRow = 4;
 
@@ -92,59 +91,15 @@ async function approve() {
 }
 
 const loadTradingPage = async () => {
-    fullRounds = [];
     currentRoundNo = BigInt(await currentRoundNumber());
     roundNumberElement.innerText = currentRoundNo.toString();
     const currentRoundInfo = await roundInformation(currentRoundNo.toString());
-    fullRounds.push({...currentRoundInfo, roundNumber: currentRoundNo.toString()})
     totalAmount = getTotalAmount(currentRoundInfo);
     totalBull = BigInt(currentRoundInfo.bullAmount);
     totalBear = BigInt(currentRoundInfo.bearAmount);
     expiry = currentRoundInfo.lockTimestamp.toString();
     totalLockedElement.innerText = `${prettyTotalAmount(getTotalAmount().toString())} USDT`;
     calculateRewardRatios();
-}
-
-async function findPreviousRounds() {
-    let info = [];
-    for (let i = 1; i < 5; i++) {
-        const roundNumber = (BigInt(currentRoundNo) - BigInt(i)).toString();
-        const roundInfo = await roundInformation(roundNumber);
-        fullRounds.push({...roundInfo, roundNumber});
-    }
-    for (let i = 0; i < 5; i++) {
-        info.push(await generateRoundRowInfo(i));
-    }
-
-    historyTableElement.innerHTML = createTable(info);
-}
-
-async function generateRoundRowInfo(i) {
-    const bearAmount = BigInt(fullRounds[i].bearAmount);
-    const bullAmount = BigInt(fullRounds[i].bullAmount);
-    const poolPrize = Number(prettyTotalAmount(bearAmount + bullAmount).toString()).toFixed(2);
-    const closePrice = BigInt(fullRounds[i].closePrice).toString();
-    const lockPrice = BigInt(fullRounds[i].lockPrice).toString();
-    const betInfo = await predictionsContract().roundInfo(fullRounds[i].roundNumber, selectedAccount);
-    const betPosition = BigInt(betInfo.position);
-    const {claimed} = betInfo;
-    const amount = numberWithCommas(Number(prettyTotalAmount(BigInt(betInfo.amount)).toString()).toFixed(2));
-
-
-    const prettyClosePrice = numberWithCommas((Number(closePrice.slice(0, 7)) / 100).toFixed(2));
-    const prettyLockPrice = numberWithCommas((Number(lockPrice.slice(0, 7)) / 100).toFixed(2));
-
-    return {
-        roundNumber: fullRounds[i].roundNumber.toString(),
-        closePrice: prettyClosePrice,
-        bearAmount: Number(prettyTotalAmount(bearAmount).toString()),
-        bullAmount: Number(prettyTotalAmount(bullAmount).toString()),
-        lockPrice: prettyLockPrice,
-        poolPrize: numberWithCommas(poolPrize),
-        betPosition,
-        amount,
-        claimed
-    };
 }
 
 function createTable(info) {
@@ -384,7 +339,12 @@ const placeBet = async (bull) => {
 
 
 $(async () => {
-    // await loadPage();
+    if (!getCookie('ethAccount').length) {
+        showError(true, 'Wallet Not Connected');
+    } else {
+        await loadPage();
+        showError(false);
+    }
 });
 
 async function loadPage() {
