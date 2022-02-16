@@ -1,5 +1,3 @@
-const airdropContractAddress = '0x6606Fd74D03ba34896cAF8a66A7E71ea02b2938A';
-
 const airdropContract = () => {
     const airdropAbi = [
         "function claim() external"

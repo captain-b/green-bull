@@ -11,6 +11,7 @@ let xRow = 10;
 let loaded = false;
 
 function checkNetwork() {
+    return false;
     return window.ethereum.chainId !== '0x89';
 }
 

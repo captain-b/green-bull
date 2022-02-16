@@ -1,13 +1,3 @@
-export type LocalEnv = 'production' | 'local-dev' | 'testnet';
-
-export interface Env {
-    prediction: string;
-    airdrop: string;
-    usdtToken: string;
-    gbullToken: string;
-    network: any;
-}
-
 const getEnv = (): LocalEnv => {
     const localEnv: string = process.env.NODE_ENV!;
     if (localEnv !== 'production' && localEnv !== 'local-dev' && localEnv !== 'testnet') {
@@ -59,7 +49,7 @@ const airdrop = (): string => {
     }
 
     if (localEnv === 'local-dev') {
-        return '0xca2e648139823E1EC27aE852BFf37B48731B8E17';
+        return '0x767c7416D95B3d62d14c51629979C10034b5d6b2';
     }
 
     if (localEnv === 'testnet') {
@@ -103,7 +93,7 @@ const usdtToken = (): string => {
 }
 
 
-export const Env: Env = {
+export const Env: AppEnv = {
     prediction: predictions(),
     airdrop: airdrop(),
     usdtToken: usdtToken(),

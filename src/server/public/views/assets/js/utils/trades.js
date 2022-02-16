@@ -1,6 +1,7 @@
-const predictionsContractAddress = '0x9051187FBFC41514de990047365CE4Bb3dD7a6c5';
-const baseTokenAddress = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
-
+// const predictionsContractAddress = '0x9051187FBFC41514de990047365CE4Bb3dD7a6c5';
+// const baseTokenAddress = '0xc2132D05D31c914a87C6611C10748AEb04B58e8F';
+// console.log(predictionsContractAddress)
+// console.log(baseTokenAddress)
 const baseTokenContract = () => {
     const baseTokenAbi = [
         "function name() view returns (string)",

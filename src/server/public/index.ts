@@ -2,7 +2,8 @@ import {Application, Request, Response} from "express";
 import {InitHandlebars, InitMiddleware} from "../../utils/express-middleware";
 import * as fs from "fs";
 import path from "path";
-import {trackEvent} from "../../utils/tracking";
+import {Env} from "../../utils/dotenv/variables";
+const template = 'template';
 
 export const PublicRoutes = (app: Application) => {
     InitHandlebars(app);
@@ -13,7 +14,6 @@ export const PublicRoutes = (app: Application) => {
     app.get('/history', HistoryPage);
     app.get('/logo', MiniLogo);
     app.get('/*', PageNotFound);
-    // app.get('/*', ComingSoon);
 }
 
 const PageNotFound = async (req: Request, res: Response) => {
@@ -23,21 +23,48 @@ const PageNotFound = async (req: Request, res: Response) => {
 const HomePage = async (req: Request, res: Response) => {
     const header = await fs.readFileSync(path.join(__dirname, './views/html/main-header.html'));
     const body = await fs.readFileSync(path.join(__dirname, './views/html/main.html'));
-    res.render('template', {title: 'Green Bull', header, html: body});
+    const content: Template = {
+        title: 'Green Bull',
+        chainId: Env.network.chainId,
+        html: body,
+        header,
+        contracts: {
+            airdrop: Env.airdrop
+        }
+    }
+    res.render(template, content);
 }
 
 const PredictionsPage = async (req: Request, res: Response) => {
     const body = await fs.readFileSync(path.join(__dirname, './views/html/predictions.html'));
-    res.render('template', {title: 'Predictions', html: body});
+    const content: Template = {
+        title: 'Predictions',
+        chainId: Env.network.chainId,
+        html: body,
+        contracts: {
+            prediction: Env.prediction,
+            usdt: Env.usdtToken
+        }
+    }
+
+    res.render(template, content);
 };
 
 const HistoryPage = async (req: Request, res: Response) => {
     const body = await fs.readFileSync(path.join(__dirname, './views/html/trade-history.html'));
-    res.render('template', {title: 'History', html: body});
+    const content: Template = {
+        title: 'Predictions',
+        chainId: Env.network.chainId,
+        html: body,
+        contracts: {
+            prediction: Env.prediction,
+        }
+    }
+
+    res.render(template, content);
 };
 
 const ComingSoon = async (req: Request, res: Response) => {
-    trackEvent();
     res.sendFile(path.join(__dirname, './views/html/coming-soon.html'));
 }
 

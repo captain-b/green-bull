@@ -38,6 +38,13 @@
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+
+  <script>
+    const airdropContractAddress = '{{contracts.airdrop}}';
+    const predictionsContractAddress = '{{contracts.prediction}}';
+    const baseTokenAddress = '{{contracts.usdt}}';
+  </script>
+
   <!--  Sweet Alert-->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/plugins/cookies.js"></script>
@@ -340,27 +347,6 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/soft-ui-dashboard.js?v=1.0.3"></script>
   <script src="../assets/js/template.js"></script>`
-  <script>
-    // Add an event listener
-    // document.addEventListener('walletConnected', function(e) {
-    //   alert('walletConnected')
-    //   // checkAccount();
-    // });
-
-
-  </script>
-<!--  <script>-->
-<!--    const account = getCookie('ethAccount');-->
-<!--    if (account.length) {-->
-<!--      setAccount(account);-->
-<!--    }-->
-<!--  </script>-->
-
-<script>
-
-</script>
-
-
 </body>
 
 </html>

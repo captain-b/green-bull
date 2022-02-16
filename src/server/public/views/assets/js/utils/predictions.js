@@ -188,14 +188,20 @@ function generateWinRow(round) {
 function generatePositionRow(round) {
     let body = '';
     if (round.amount === zero) {
-        body += `<td class="align-middle text-center text-sm">
-                <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
-              </td>`;
+        // body += `<td class="text-center text-sm">
+        //         <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
+        //       </td>`;
+        body += `<td class="text-center text-sm">
+                    <div class="d-flex align-items-center text-center" style="padding-left: 5%">
+                      <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
+                    </div>
+
+                  </td>`
     } else {
         const color = round.betPosition.toString() === '1' ? 'danger' : 'success';
         const position = round.betPosition.toString() === '1' ? 'down' : 'up';
-        body += `<td class="class="align-middle text-center text-sm"">
-                    <div class="d-flex align-items-center">
+        body += `<td class="text-center text-sm">
+                    <div class="d-flex align-items-center text-center" style="padding-left: 5%">
                       <button class="btn btn-icon-only btn-rounded btn-outline-${color} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-${position}" aria-hidden="true"></i></button>
                       <div class="d-flex flex-column">
                         <p class="text-secondary text-xs font-weight-bold mb-0">${round.amount}</p>
@@ -289,7 +295,7 @@ async function updateBets(msgSender, round, amount) {
         await loadPredictionsTable();
     }
     const totalAmount = BigInt(await totalLocked(round)).toString();
-    totalLockedElement.innerText = prettyTotalAmount(totalAmount);
+    totalLockedElement.innerText = `${prettyTotalAmount(totalAmount)} USDT`;
     calculateRewardRatios();
 }
 

@@ -26,8 +26,10 @@ const capitalizeString = (message) => {
 }
 
 const prettyTotalAmount = (totalAmount) => {
-    const wei = ethers.utils.bigNumberify(BigInt(totalAmount).toString());
-    return Number(ethers.utils.formatEther(wei)).toFixed(2);
+    totalAmount = totalAmount.toString();
+    const number = (BigInt(totalAmount) / BigInt(10 ** 4)).toString();
+    const sliced = number.substring(0, number.length - 2) + '.' + number.substring(-2);
+    return Number(sliced).toFixed(2);
 }
 
 const pendingTxAlert = () => {
