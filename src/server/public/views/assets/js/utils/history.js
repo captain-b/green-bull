@@ -11,15 +11,41 @@ let xRow = 10;
 let loaded = false;
 
 function checkNetwork() {
-    if (window.ethereum.chainId === '0x539') {
-        return false;
+    return window.ethereum.chainId !== chainId;
+}
+
+async function loadPredictionsContent() {
+    if (getCookie('ethAccount')) {
+        await ethereum.request({method: 'eth_requestAccounts'});
     }
-    return true
+    try {
+        await checkAccount();
+    } catch (e) {
+        // alert('er1' + JSON.stringify(e));
+    }
+}
+
+async function loadHistoryContent() {
+    if (getCookie('ethAccount')) {
+        await ethereum.request({method: 'eth_requestAccounts'});
+    }
+    try {
+        await checkAccount();
+    } catch (e) {
+        // alert('er1' + JSON.stringify(e));
+    }
+
+    try {
+        await loadTable(true);
+        // await loadPredictionHistoryTable();
+    } catch (e) {
+        // alert('er2' + JSON.stringify(e));
+    }
 }
 
 async function checkAccount() {
     const walletNotConnected = 'Wallet not connected.';
-    const wrongNetwork = 'Please select the Polygon network and refresh the page.'
+    const wrongNetwork = 'Please select the Polygon network.'
     if (getCookie('ethAccount').length) {
         if (checkNetwork()) {
             showError(true, wrongNetwork);
@@ -28,6 +54,7 @@ async function checkAccount() {
         provider = new ethers.providers.Web3Provider(window.ethereum);
         showError(false);
         historyTableElement.innerHTML = '';
+        tradeHistoryRowElement.innerHTML = '';
         loaded = false;
         await loadPage();
     } else {
@@ -46,20 +73,19 @@ function showError(connected, message) {
     document.getElementById('history-row').hidden = connected;
 }
 
-async function loadTable() {
-    console.log('this')
+async function loadTable(isHistoryPage) {
     loadMoreElement.innerText = 'Loading';
     loadMoreElement.disabled = true;
     try {
-        await loadPredictionsTable();
+        await loadPredictionsTable(isHistoryPage);
     } catch (e) {
-        displayAlert(e.data.message ?? '', 'error');
+        displayAlert(e.data.message ?? 'Unknown error', 'error');
     }
     loadMoreElement.innerText = 'Load More';
     loadMoreElement.disabled = false;
 }
 
-async function loadPredictionsTable() {
+async function loadPredictionsTable(isHistoryPage) {
     if (!loaded) {
         currentRoundNo = BigInt(await currentRoundNumber()).toString();
         loaded = true;
@@ -71,16 +97,18 @@ async function loadPredictionsTable() {
         loadMoreElement.hidden = true;
     }
 
-    await fetchPredictionHistory(currentRoundNo > BigInt(xRow) ?
+    const history = await fetchPredictionHistory(currentRoundNo > BigInt(xRow) ?
             BigInt(currentRoundNo) - BigInt(xRow) : 0,
         currentRoundNo.toString()
     );
-}
 
-async function loadPredictionHistoryTable() {
-    loading(true);
-    await loadTable();
-    loading(false);
+    if (isHistoryPage) {
+        if (history && history.length) {
+            tradeHistoryRowElement.innerHTML += history;
+        }
+        return;
+    }
+    tradeHistoryRowElement.innerHTML = history;
 }
 
 async function fetchPredictionHistory(a, b) {
@@ -90,21 +118,34 @@ async function fetchPredictionHistory(a, b) {
         return;
     }
 
+    let bodyString = '';
+
     for (let i = b; i > a; i--) {
         const round = await roundInformation(BigInt(i).toString());
         let roundInfo = await generateRoundInfo(round, i);
+        const _roundNo = generateRoundNumberRow(roundInfo);
+        if (tradeHistoryRowElement.innerHTML.includes(_roundNo)) {
+            return;
+        }
+        const _roundInfo = generateWinRow(roundInfo);
+        const _lockPrice = generateLockPriceRow(roundInfo);
+        const _closePriceRow = generateClosePriceRow(roundInfo);
+        const _poolPrize = generatePoolPrizeRow(roundInfo);
+        const _position = generatePositionRow(roundInfo);
 
         let body = '<tr>';
-        body += generateRoundNumberRow(roundInfo);
-        body += generateLockPriceRow(roundInfo);
-        body += generateClosePriceRow(roundInfo);
-        body += generatePoolPrizeRow(roundInfo);
-        body += generateWinRow(roundInfo);
-        body += generatePositionRow(roundInfo);
+        body += _roundNo;
+        body += _roundInfo;
+        body += _lockPrice;
+        body += _closePriceRow;
+        body += _poolPrize;
+        body += _position;
 
         body += '</tr>'
-        tradeHistoryRowElement.innerHTML += body;
+        bodyString += body;
     }
+
+    return bodyString;
 }
 
 async function generateRoundInfo(roundInfo, i) {
@@ -247,6 +288,10 @@ function generatePositionRow(round) {
 
     return body;
 }
+
+ethereum.on('chainChanged', async (chainId, other) => {
+    await loadPredictionsContent()
+});
 
 predictionsContract().on('Claim', async (sender, round, amount) => {
     if (sender.toLowerCase() === selectedAccount.toLowerCase()) {

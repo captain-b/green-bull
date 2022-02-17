@@ -11,8 +11,8 @@
                 <a class="btn btn-dark mb-0 me-2" href="https://quickswap.exchange/#/swap?outputCurrency=0x21ecea8f7788808848fc61d3fb8897f1a9a00d94" target="_blank" style="margin-top: 10px">
                   <i class="fab me-1" aria-hidden="true"></i> Buy/Sell GBULL Token
                 </a>
-                <a class="btn btn-dark mb-0 me-2 disabled" style="margin-top: 10px">
-                  <i class="fab me-1" aria-hidden="true"></i> Claim Airdrop (Coming Soon)
+                <a class="btn btn-dark mb-0 me-2" style="margin-top: 10px" onclick="claimAirdrop()">
+                  <i class="fab me-1" aria-hidden="true"></i> Claim Airdrop
                 </a>
               </div>
             </div>
@@ -27,9 +27,9 @@
   <div class="col-12 mt-4" id="projects">
 
     <div class="card-header pb-0 px-3" style="text-align: center">
-      <img src="../assets/img/loading-icon.gif" style="height: 25px">
+      <img src="../assets/img/finished.png" style="height: 25px">
       <h3 class="mb-0">Phase 1</h3>
-      <p style="height: 25px; display: contents;">In Progress</p>
+      <p style="height: 25px; display: contents;">Completed</p>
     </div>
 
     <div class="card mb-4">
@@ -332,5 +332,15 @@
   </div>
 <script>
   document.getElementById('dashboard-menu-link').className = 'nav-link  active';
+  ethereum.on('accountsChanged', async (accounts) => {
+    if (accounts[0].length) {
+      setCookie('ethAccount', accounts[0]);
+      headerWalletElement.innerText = getCookie('ethAccount');
+      await checkAccount();
+    } else {
+      headerWalletElement.innerText = 'Not Connected';
+    }
+  });
+
 </script>
 

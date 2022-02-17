@@ -11,7 +11,6 @@ let expiry = 0;
 let totalBull = BigInt(0);
 let totalBear = BigInt(0);
 let totalAmount = BigInt(0);
-let fullRounds = [];
 
 xRow = 4;
 
@@ -92,59 +91,15 @@ async function approve() {
 }
 
 const loadTradingPage = async () => {
-    fullRounds = [];
     currentRoundNo = BigInt(await currentRoundNumber());
     roundNumberElement.innerText = currentRoundNo.toString();
     const currentRoundInfo = await roundInformation(currentRoundNo.toString());
-    fullRounds.push({...currentRoundInfo, roundNumber: currentRoundNo.toString()})
     totalAmount = getTotalAmount(currentRoundInfo);
     totalBull = BigInt(currentRoundInfo.bullAmount);
     totalBear = BigInt(currentRoundInfo.bearAmount);
     expiry = currentRoundInfo.lockTimestamp.toString();
     totalLockedElement.innerText = `${prettyTotalAmount(getTotalAmount().toString())} USDT`;
     calculateRewardRatios();
-}
-
-async function findPreviousRounds() {
-    let info = [];
-    for (let i = 1; i < 5; i++) {
-        const roundNumber = (BigInt(currentRoundNo) - BigInt(i)).toString();
-        const roundInfo = await roundInformation(roundNumber);
-        fullRounds.push({...roundInfo, roundNumber});
-    }
-    for (let i = 0; i < 5; i++) {
-        info.push(await generateRoundRowInfo(i));
-    }
-
-    historyTableElement.innerHTML = createTable(info);
-}
-
-async function generateRoundRowInfo(i) {
-    const bearAmount = BigInt(fullRounds[i].bearAmount);
-    const bullAmount = BigInt(fullRounds[i].bullAmount);
-    const poolPrize = Number(prettyTotalAmount(bearAmount + bullAmount).toString()).toFixed(2);
-    const closePrice = BigInt(fullRounds[i].closePrice).toString();
-    const lockPrice = BigInt(fullRounds[i].lockPrice).toString();
-    const betInfo = await predictionsContract().roundInfo(fullRounds[i].roundNumber, selectedAccount);
-    const betPosition = BigInt(betInfo.position);
-    const {claimed} = betInfo;
-    const amount = numberWithCommas(Number(prettyTotalAmount(BigInt(betInfo.amount)).toString()).toFixed(2));
-
-
-    const prettyClosePrice = numberWithCommas((Number(closePrice.slice(0, 7)) / 100).toFixed(2));
-    const prettyLockPrice = numberWithCommas((Number(lockPrice.slice(0, 7)) / 100).toFixed(2));
-
-    return {
-        roundNumber: fullRounds[i].roundNumber.toString(),
-        closePrice: prettyClosePrice,
-        bearAmount: Number(prettyTotalAmount(bearAmount).toString()),
-        bullAmount: Number(prettyTotalAmount(bullAmount).toString()),
-        lockPrice: prettyLockPrice,
-        poolPrize: numberWithCommas(poolPrize),
-        betPosition,
-        amount,
-        claimed
-    };
 }
 
 function createTable(info) {
@@ -233,14 +188,20 @@ function generateWinRow(round) {
 function generatePositionRow(round) {
     let body = '';
     if (round.amount === zero) {
-        body += `<td>
-                <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
-              </td>`;
+        // body += `<td class="text-center text-sm">
+        //         <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
+        //       </td>`;
+        body += `<td class="text-center text-sm">
+                    <div class="d-flex align-items-center text-center" style="padding-left: 5%">
+                      <p class="text-xs font-weight-bold mb-0">${round.amount}</p>
+                    </div>
+
+                  </td>`
     } else {
         const color = round.betPosition.toString() === '1' ? 'danger' : 'success';
         const position = round.betPosition.toString() === '1' ? 'down' : 'up';
-        body += `<td class="align-middle text-center">
-                    <div class="d-flex align-items-center">
+        body += `<td class="text-center text-sm">
+                    <div class="d-flex align-items-center text-center" style="padding-left: 5%">
                       <button class="btn btn-icon-only btn-rounded btn-outline-${color} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-${position}" aria-hidden="true"></i></button>
                       <div class="d-flex flex-column">
                         <p class="text-secondary text-xs font-weight-bold mb-0">${round.amount}</p>
@@ -334,7 +295,7 @@ async function updateBets(msgSender, round, amount) {
         await loadPredictionsTable();
     }
     const totalAmount = BigInt(await totalLocked(round)).toString();
-    totalLockedElement.innerText = prettyTotalAmount(totalAmount);
+    totalLockedElement.innerText = `${prettyTotalAmount(totalAmount)} USDT`;
     calculateRewardRatios();
 }
 
@@ -346,8 +307,12 @@ predictionsContract().on('Claim', ({sender, round}) => {
 
 ethereum.on('accountsChanged', async function (acc) {
     console.log(acc)
-    await loadTradingPage();
+    // await loadTradingPage();
 });
+
+// setTimeout(async () => {
+//     await loadTradingPage();
+// }, 1000)
 
 const betBull = async () => {
     await placeBet(true);
@@ -362,7 +327,7 @@ const placeBet = async (bull) => {
     pendingTxAlert();
     let tx;
     const roundNo = BigInt(currentRoundNo).toString();
-    const amount = BigInt(Number(inputAmountElement.value) * 10 ** 18).toString();
+    const amount = BigInt(Number(inputAmountElement.value) * 10 ** 6).toString();
     try {
         if (bull) {
             tx = await predictionsContract().connect(await provider.getSigner()).betBull(amount, roundNo);
@@ -380,11 +345,17 @@ const placeBet = async (bull) => {
 
 
 $(async () => {
-    // await loadPage();
+    if (!getCookie('ethAccount').length) {
+        showError(true, 'Wallet Not Connected');
+    } else {
+        await loadPage();
+        showError(false);
+    }
 });
 
 async function loadPage() {
     if (selectedAccount.length) {
+        tradeHistoryRowElement.innerHTML = '';
         showLoading(true);
         await loadTradingPage();
         await loadPredictionsTable();
@@ -419,3 +390,4 @@ async function loadPage() {
 
     infoElement.hidden = true
 }
+

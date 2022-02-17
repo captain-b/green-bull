@@ -35,11 +35,11 @@
                   <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Round #</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Win</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lock Price</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Close Price</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Pool Prize</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Win</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Your Position</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Close Price</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Pool Prize</th>
+                    <th class="left text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Your Position</th>
                     <th></th>
                   </tr>
                   </thead>
@@ -51,7 +51,7 @@
 
               </div>
               <div class="card-header pb-0 px-3" style="text-align: center">
-                <button id="load-more-button" onclick="loadTable()" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer">
+                <button id="load-more-button" onclick="loadTable(true)" class="btn btn-icon btn-3 btn-dark fixed-plugin-button-nav cursor-pointer">
                   Load More
                 </button>
               </div>
@@ -70,7 +70,26 @@
 <script type="text/javascript" src="../assets/js/utils/history.js"></script>
 <script>
   document.getElementById('history-menu-link').className = 'nav-link  active';
-  noTransactions(true);
-  loadPredictionHistoryTable();
+  $(async () => {
+    if (!getCookie('ethAccount').length) {
+      showError(true, 'Wallet Not Connected');
+    } else {
+      noTransactions(true);
+      loading(false);
+      await loadHistoryContent();
+    }
+  });
 
+  document.addEventListener('walletConnected', async function(e) {
+    if (getCookie('ethAccount').length) {
+      await loadHistoryContent();
+      showError(false);
+    } else {
+      await checkAccount();
+    }
+  });
+
+  document.addEventListener('walletDisconnected', async function(e) {
+    await checkAccount();
+  });
 </script>
