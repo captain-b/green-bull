@@ -45,7 +45,7 @@ const airdrop = (): string => {
     const localEnv: LocalEnv = getEnv();
 
     if (localEnv === 'production') {
-        return '0x6606fd74d03ba34896caf8a66a7e71ea02b2938a';
+        return '0x768Ebd73661F66074742c690379c5bF43200EAeE';
     }
 
     if (localEnv === 'local-dev') {
